@@ -47,12 +47,18 @@ input[type="file"] {
     height: 24px;
 }
 
+.control-links {
+    display: flex;
+    flex-direction: row;
+}
+
 .back-link {
     display: block;
     margin-top: 20px;
     font-size: 18px;
     text-decoration: none;
     color: #fff;
+    margin-right: 20px;
 }
 
 .back-link:hover {

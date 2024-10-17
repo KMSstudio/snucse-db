@@ -17,6 +17,11 @@ html, body {
     justify-content: space-between;
     align-items: center;
     box-sizing: border-box;
+    
+    -webkit-user-select:none;
+    -moz-user-select:none;
+    -ms-user-select:none;
+    user-select:none
 }
 
 .header h1 {
@@ -28,7 +33,7 @@ html, body {
 .nav {
     display: flex;
     gap: 20px;
-    flex-wrap: wrap; /* 화면 크기에 따라 링크가 줄바꿈 되도록 설정 */
+    flex-wrap: wrap;
 }
 
 .nav a {
@@ -99,6 +104,11 @@ html, body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
+
+    -webkit-user-select:none;
+    -moz-user-select:none;
+    -ms-user-select:none;
+    user-select:none
 }
 
 .content-title {

@@ -44,7 +44,10 @@
 
         <%- include('components/files', { files: files }) %>
 
-        <a class="back-link" href="<%= backto %>">Go Back</a>
+        <div class="control-links">
+            <a class="back-link" href="<%= backto %>">Go Back</a>
+            <a class="back-link" href="/">Go Home</a>
+        </div>
     </div>
 </body>
 </html>

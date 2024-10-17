@@ -12,9 +12,9 @@
         <h1>I Love CSE</h1>
         <div class="nav">
             <a href="/">home</a>
-            <% for(let i = 0; i < buttons.length; i++) { 
-                const buttonLabel = buttons[i].split('/').pop(); %>
-                <a href="<%= buttons[i] %>"><%= buttonLabel %></a>
+            <% for(let i = 0; i < navs.length; i++) { 
+                const navLabel = navs[i].split('/').pop(); %>
+                <a href="<%= navs[i] %>"><%= navLabel %></a>
             <% } %>
         </div>
     </div>

@@ -49,7 +49,7 @@ const upload = multer({ storage: storage }).single("file");
 const output = {
     main: (req, res) => {
         res.render("index", {
-            "navs": ["/read/"],
+            "navs": ["/read/cse/book", "/read/cse/exam/수학2"],
             "buttons": ["/read/cse/book", "/read/cse/exam/수학2"]
         });
     }
@@ -78,7 +78,7 @@ const database = {
                 }
 
                 const fileList = files
-                // .filter(file => !file.startsWith('.'))
+                .filter(file => !file.startsWith('.'))
                 .map(file => {
                     const filePath = path.join(fullPath, file);
                     const urlPath = relativePath === '' ? `${file}` : `${relativePath}/${file}`;
