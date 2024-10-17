@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contents of <%= path %></title>
+    <link rel="stylesheet" href="/css/show.css">
+    <script>
+        function openUploadPopup() {
+            const popup = window.open("/upload/<%= path %>", "Upload File", "width=400,height=250");
+            if (window.focus) popup.focus();
+        }
+
+        function openCreatePopup() {
+            const popup = window.open("/create/<%= path %>", "Create Folder", "width=400,height=250");
+            if (window.focus) popup.focus();
+        }
+
+        function downloadZip() {
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = '/zip/<%= path %>';
+            document.body.appendChild(form);
+            form.submit();
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Contents of <%= path %></h1>
+            <div class="button-group">
+                <button onclick="openUploadPopup()" id="upload-file-btn">
+                    <img src="/image/upload.png" alt="New File" class="icon">
+                </button>
+                <button onclick="openCreatePopup()" id="create-folder-btn">
+                    <img src="/image/new-folder.png" alt="New Folder" class="icon">
+                </button>
+                <button onclick="downloadZip()" id="download-zip-btn">
+                    <img src="/image/download.png" alt="Download zip" class="icon">
+                </button>
+            </div>
+        </header>
+
+        <%- include('components/files', { files: files }) %>
+
+        <a class="back-link" href="<%= backto %>">Go Back</a>
+    </div>
+</body>
+</html>

@@ -1,0 +1,86 @@
+.file-list {
+    margin-top: 20px;
+}
+
+.file-item {
+    display: flex;
+    background-color: #000;
+    border-radius: 5px;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px;
+
+    transition: background-color 0.3s ease
+}
+
+.file-item:hover {
+    background-color: #222;
+}
+
+.file-icon {
+    width: 24px;
+    height: 24px;
+    margin-right: 10px;
+}
+
+.file-item a {
+    flex-grow: 1;
+    text-decoration: none;
+    font-size: 18px;
+    color: #fff;
+}
+
+.file-item p {
+    color: #ccc;
+    text-decoration: none;
+    font-size: 18px;
+}
+
+.file-item a:hover {
+    text-decoration: underline;
+}
+
+/* Delete Button */
+
+.download-zip-each-btn {
+    background-color: #fff;
+    color: #fff;
+    padding: 5px 5px;
+    margin-right: 5px;
+    cursor: pointer;
+    border-radius: 4px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    
+    width: 20px;
+    height: 20px;
+}
+
+.file-item:hover .download-zip-each-btn {
+    opacity: 1;
+}
+
+.download-zip-each-btn:hover {
+    background-color: #ccc;
+}
+
+.delete-btn {
+    background-color: #fff;
+    color: #fff;
+    padding: 5px 5px;
+    cursor: pointer;
+    border-radius: 4px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    
+    width: 20px;
+    height: 20px;
+}
+
+.file-item:hover .delete-btn {
+    opacity: 1;
+}
+
+.delete-btn:hover {
+    background-color: #ccc;
+}

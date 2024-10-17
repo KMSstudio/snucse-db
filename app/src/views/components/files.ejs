@@ -1,0 +1,86 @@
+<head>
+    <link rel="stylesheet" href="/css/components/files.css">
+</head>
+<script>
+    // POST to server that delete the item
+    function deleteItem(itemName) {
+        const relativePath = "<%= path %>";
+
+        if (confirm(`Are you sure you want to delete "${itemName}"?`)) {
+            fetch(`/delete/${relativePath}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ name: itemName })
+            })
+            .then(response => {
+                if (response.ok) {
+                    window.location.reload();
+                } else {
+                    alert("Error deleting item.");
+                }
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                alert("Failed to delete item.");
+            });
+        }
+    }
+
+    // download folder as zip
+    function downloadZipEach(folderName) {
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = `/zip/<%= path %>/${folderName}`;
+        document.body.appendChild(form);
+        form.submit();
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
+        // Function to check if file extension image exists
+        function checkFileImageExists(fileExt, callback) {
+            const imgPath = `/image/ext/${fileExt}.png`;
+            fetch(imgPath, { method: 'HEAD' })
+                .then(response => callback(response.ok))
+                .catch(() => callback(false));
+        }
+
+        // Apply image sources based on file extensions
+        function applyFileIcons() {
+            const fileItems = document.querySelectorAll(".file-item");
+
+            fileItems.forEach(fileItem => {
+                const fileType = fileItem.getAttribute("data-file-type");
+                const fileName = fileItem.getAttribute("data-file-name");
+                const fileExt = fileItem.getAttribute("data-file-ext");
+                const fileIcon = fileItem.querySelector(".file-icon");
+
+                if (fileType === "folder") return;
+                checkFileImageExists(fileExt, exists => {
+                    if (exists) { fileIcon.src = `/image/ext/${fileExt}.png`; }
+                    else { fileIcon.src = '/image/file.png'; }
+                });
+            });
+        }
+
+        applyFileIcons();
+    });
+</script>
+
+<div class="file-list">
+    <% if (files.length > 0) { %>
+        <% files.forEach(function(file) { %>
+            <div class="file-item" data-file-type="<%= file.type %>" data-file-name="<%= file.name %>" data-file-ext="<%= file.ext %>">
+                <img src="/image/<%= file.type %>.png" alt="<%= file.type %> icon" class="file-icon">
+                <a href="<%= file.goto %>"><%= file.name %></a>
+                <% if (file.type === "folder") { %>
+                    <img src="/image/download.png" alt="Zip" class="download-zip-each-btn" onclick="downloadZipEach('<%= file.name %>')">
+                <% } %>
+                <img src="/image/delete.png" alt="Del" class="delete-btn" onclick="deleteItem('<%= file.name %>')">
+            </div>
+        <% }); %>
+    <% } else { %>
+        <div>No files or folders found.</div>
+    <% } %>
+</div>

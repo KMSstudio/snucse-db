@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>I Love CSE</title>
+    <link rel="stylesheet" href="/css/index.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <div class="header">
+        <h1>I Love CSE</h1>
+        <div class="nav">
+            <a href="/">home</a>
+            <% for(let i = 0; i < buttons.length; i++) { 
+                const buttonLabel = buttons[i].split('/').pop(); %>
+                <a href="<%= buttons[i] %>"><%= buttonLabel %></a>
+            <% } %>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <!-- profile section -->
+        <div class="sidebar">
+            <div class="profile-section">
+                <div class="profile-circle">
+                    profile
+                </div>
+                <div class="profile-info">
+                    <h2>ms Kang</h2>
+                    <p>SNU CSE 24</p>
+                    <p>Seoul, Korea</p>
+                    <a href="mailto:tomskang@naver.com">Email</a>
+                    <a href="https://github.com/KMSstudio">Github</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- content section -->
+        <div class="content">
+            <div class="content-title">
+                <h1>SNUCSE DB</h1>
+                <p>Seoul National University - Computer Science and Engineeging Database</p>
+            </div>
+
+            <div class="buttons">
+                <% for(let i = 0; i < buttons.length; i++) {
+                    const buttonLabel = buttons[i].split('/').pop(); %>
+                    <form action="<%= buttons[i] %>" method="get">
+                        <button type="submit"> <%= buttonLabel %> </button>
+                    </form>
+                <% } %>
+            </div>
+
+            <div class="special-thanks">
+                <a href="/">Special thanks</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
