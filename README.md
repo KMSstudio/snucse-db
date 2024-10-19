@@ -1,2 +1,2 @@
-# login-lecture
-백엔드 맛보기 강의
+# SNUCSE DB
+Database for Seoul National University - Computer Science and Engineering major

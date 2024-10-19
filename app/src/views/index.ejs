@@ -5,6 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>I Love CSE</title>
     <link rel="stylesheet" href="/css/index.css">
+    <script>
+        // 링크 복사 함수
+        function copyLink(href) {
+            navigator.clipboard.writeText(href).then(() => {
+                alert('링크가 복사되었습니다: ' + href);
+            }, () => {
+                alert('링크 복사에 실패했습니다.');
+            });
+        }
+    </script>
 </head>
 <body>
     <!-- Navbar -->
@@ -20,18 +30,31 @@
     </div>
 
     <div class="main-content">
-        <!-- profile section -->
+        <!-- Sidebar -->
         <div class="sidebar">
-            <div class="profile-section">
+            <div id="profile-section">
                 <div class="profile-circle">
-                    profile
+                    <img src="/image/profile.jpg" alt="프로필 이미지" class="profile-image">
                 </div>
                 <div class="profile-info">
-                    <h2>ms Kang</h2>
-                    <p>SNU CSE 24</p>
-                    <p>Seoul, Korea</p>
                     <a href="mailto:tomskang@naver.com">Email</a>
                     <a href="https://github.com/KMSstudio">Github</a>
+                </div>
+            </div>
+            <div id="link-section">
+                <div class="link-list">
+                    <% for(let i = 0; i < links.length; i++) { %>
+                        <div class="link-item">
+                            <button class="copy-button" onclick="copyLink('<%= links[i].href %>')">
+                                <img src="/image/copy.png" alt="복사 버튼" class="copy-icon">
+                                <img src="/image/copy-hover.png" alt="복사 버튼 hover" class="copy-hover-icon">
+                            </button>
+                            <div class="link-info">
+                                <img src="<%= links[i].src %>" alt="<%= links[i].name %>" class="link-icon">
+                                <a href="<%= links[i].href %>" target="_blank"><%= links[i].name %></a>
+                            </div>
+                        </div>
+                    <% } %>
                 </div>
             </div>
         </div>

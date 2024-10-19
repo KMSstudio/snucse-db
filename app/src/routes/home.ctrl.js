@@ -50,7 +50,14 @@ const output = {
     main: (req, res) => {
         res.render("index", {
             "navs": ["/read/cse/book", "/read/cse/exam/수학2"],
-            "buttons": ["/read/cse/book", "/read/cse/exam/수학2"]
+            "buttons": ["/read/cse/book", "/read/cse/exam/수학2"],
+            "links" : [
+                { src: '/image/lnk/snucse.png', name: '컴공 홈페이지', href: 'https://cse.snu.ac.kr/'},
+                { src: '/image/lnk/snusci.png', name: '교양수학 홈페이지', href: 'https://www.math.snu.ac.kr/board/taoffice'},
+                { src: '/image/lnk/unime.png', name: '유니미', href: 'https://snu.unime.or.kr/main/main.do'},
+                { src: '/image/lnk/gpt.png', name: 'GPT', href: 'https://chatgpt.com/'},
+                { src: '/image/lnk/scihub.png', name: 'scihub', href: 'https://www.sci-hub.se/'},
+            ]
         });
     }
 }
