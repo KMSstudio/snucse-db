@@ -5,6 +5,7 @@ const fs = require("fs");
 const multer = require("multer");
 
 const ZipFileSys = require("../models/ZipFileSys");
+const NavConstants = require("../models/NavConstants");
 
 const util = {
     getUniqueFilename : (filename, dir) => {
@@ -49,11 +50,16 @@ const upload = multer({ storage: storage }).single("file");
 const output = {
     main: (req, res) => {
         res.render("index", {
-            "navs": ["/read/cse/book", "/read/cse/exam/수학2"],
+            "navs": [
+                { name: '교재', href: "/read/cse/book"},
+                { name: '시험', href: "/read/cse/exam"},
+            ],
             "buttons": [
                 { name: '교재', href: "/read/cse/book"},
+                { name: '시험', href: "/read/cse/exam"},
+                { name: '수학1', href: ''},
                 { name: '수학2', href: "/read/cse/exam/수학2"},
-                { name: '통계', href: "/read/cse/exam/통계학.정상아"},
+                { name: '컴구', href: ''}
             ],
             "links" : [
                 { src: '/image/lnk/snucse.png', name: '컴공 홈페이지', href: 'https://cse.snu.ac.kr/'},
@@ -107,7 +113,12 @@ const database = {
                 res.render("show", {
                     files: fileList,
                     path: relativePath,
-                    backto: backto
+                    backto: backto,
+                    is_admin: 1,
+                    "navs": [
+                        { name: '교재', href: "/read/cse/book"},
+                        { name: '시험', href: "/read/cse/exam"},
+                    ],
                 });
             });
         });

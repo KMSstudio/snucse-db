@@ -77,7 +77,9 @@
                 <% if (file.type === "folder") { %>
                     <img src="/image/download.png" alt="Zip" class="download-zip-each-btn" onclick="downloadZipEach('<%= file.name %>')">
                 <% } %>
-                <img src="/image/delete.png" alt="Del" class="delete-btn" onclick="deleteItem('<%= file.name %>')">
+                <% if (is_admin) { %>
+                    <img src="/image/delete.png" alt="Del" class="delete-btn" onclick="deleteItem('<%= file.name %>')">
+                <% } %>
             </div>
         <% }); %>
     <% } else { %>

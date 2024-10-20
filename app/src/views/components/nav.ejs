@@ -1,0 +1,11 @@
+<!-- Navbar -->
+<link rel="stylesheet" href="/css/components/nav.css">
+<header id="navbar">
+    <h1>CSE rules the world</h1>
+    <div class="nav">
+        <a href="/">home</a>
+        <% for(let i = 0; i < navs.length; i++) { %>
+            <a href="<%= navs[i].href %>"><%= navs[i].name %></a>
+        <% } %>
+    </div>
+</header>

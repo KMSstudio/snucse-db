@@ -6,7 +6,6 @@
     <title>SNUCSE DB</title>
     <link rel="stylesheet" href="/css/index.css">
     <script>
-        // 링크 복사 함수
         function copyLink(href) {
             navigator.clipboard.writeText(href).then(() => {
                 alert('링크가 복사되었습니다: ' + href);
@@ -15,20 +14,11 @@
             });
         }
     </script>
-    <script src="/js/main.js" defer></script>
+    <script src="/js/index.js" defer></script>
 </head>
 <body>
-    <!-- Navbar -->
-    <div class="header">
-        <h1>CSE rules the world</h1>
-        <div class="nav">
-            <a href="/">home</a>
-            <% for(let i = 0; i < navs.length; i++) { 
-                const navLabel = navs[i].split('/').pop(); %>
-                <a href="<%= navs[i] %>"><%= navLabel %></a>
-            <% } %>
-        </div>
-    </div>
+    <!-- Nav -->
+    <%- include('components/nav', { navs: navs }) %>
 
     <div class="main-content">
         <!-- Sidebar -->
