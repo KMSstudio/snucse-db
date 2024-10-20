@@ -26,7 +26,12 @@ class NavConstants {
             }
         }
 
-        // Return only the values for the requested keys
+        // If the input is a single string, return the value for that key
+        if (typeof keys === 'string') {
+            return NavConstants.cachedData[keys] !== undefined ? NavConstants.cachedData[keys] : null;
+        }
+
+        // If the input is an array of keys, return an object with the requested key-value pairs
         const result = {};
         keys.forEach(key => {
             if (NavConstants.cachedData[key] !== undefined) { result[key] = NavConstants.cachedData[key]; } });

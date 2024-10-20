@@ -49,26 +49,7 @@ const upload = multer({ storage: storage }).single("file");
 
 const output = {
     main: (req, res) => {
-        res.render("index", {
-            "navs": [
-                { name: '교재', href: "/read/cse/book"},
-                { name: '시험', href: "/read/cse/exam"},
-            ],
-            "buttons": [
-                { name: '교재', href: "/read/cse/book"},
-                { name: '시험', href: "/read/cse/exam"},
-                { name: '수학1', href: ''},
-                { name: '수학2', href: "/read/cse/exam/수학2"},
-                { name: '컴구', href: ''}
-            ],
-            "links" : [
-                { src: '/image/lnk/snucse.png', name: '컴공 홈페이지', href: 'https://cse.snu.ac.kr/'},
-                { src: '/image/lnk/snusci.png', name: '교양수학 홈페이지', href: 'https://www.math.snu.ac.kr/board/taoffice'},
-                { src: '/image/lnk/unime.png', name: '유니미', href: 'https://snu.unime.or.kr/main/main.do'},
-                { src: '/image/lnk/gpt.png', name: 'GPT', href: 'https://chatgpt.com/'},
-                { src: '/image/lnk/scihub.png', name: 'scihub', href: 'https://www.sci-hub.se/'},
-            ]
-        });
+        res.render("index", NavConstants.get(['navs', 'buttons', 'links']));
     }
 }
 
@@ -115,10 +96,7 @@ const database = {
                     path: relativePath,
                     backto: backto,
                     is_admin: 1,
-                    "navs": [
-                        { name: '교재', href: "/read/cse/book"},
-                        { name: '시험', href: "/read/cse/exam"},
-                    ],
+                    navs: NavConstants.get('navs'),
                 });
             });
         });
