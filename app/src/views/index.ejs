@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>I Love CSE</title>
+    <title>SNUCSE DB</title>
     <link rel="stylesheet" href="/css/index.css">
     <script>
         // 링크 복사 함수
@@ -15,11 +15,12 @@
             });
         }
     </script>
+    <script src="/js/main.js" defer></script>
 </head>
 <body>
     <!-- Navbar -->
     <div class="header">
-        <h1>I Love CSE</h1>
+        <h1>CSE rules the world</h1>
         <div class="nav">
             <a href="/">home</a>
             <% for(let i = 0; i < navs.length; i++) { 
@@ -34,11 +35,19 @@
         <div class="sidebar">
             <div id="profile-section">
                 <div class="profile-circle">
-                    <img src="/image/profile.jpg" alt="프로필 이미지" class="profile-image">
+                    <img src="/image/profile/snu-logo.png" alt="프로필 이미지" id="profile-image">
                 </div>
                 <div class="profile-info">
-                    <a href="mailto:tomskang@naver.com">Email</a>
-                    <a href="https://github.com/KMSstudio">Github</a>
+                    <!-- <a href="mailto:tomskang@naver.com">Email</a> -->
+                    <button class="profile-button" onclick="location.href='mailto:tomskang@naver.com'">
+                        <img src="/image/open-mail.png" alt="email" class="profile-icon">
+                        <img src="/image/open-mail-hover.png" alt="email" class="profile-hover-icon">
+                    </button>
+                    <!-- <a href="https://github.com/KMSstudio">Github</a> -->
+                    <button class="profile-button" onclick="window.open('https://github.com/KMSstudio')">
+                        <img src="/image/github.png" alt="email" class="profile-icon">
+                        <img src="/image/github-hover.png" alt="email" class="profile-hover-icon">
+                    </button>
                 </div>
             </div>
             <div id="link-section">
@@ -67,10 +76,9 @@
             </div>
 
             <div class="buttons">
-                <% for(let i = 0; i < buttons.length; i++) {
-                    const buttonLabel = buttons[i].split('/').pop(); %>
-                    <form action="<%= buttons[i] %>" method="get">
-                        <button type="submit"> <%= buttonLabel %> </button>
+                <% for(let i = 0; i < buttons.length; i++) { %>
+                    <form action="<%= buttons[i].href %>" method="get">
+                        <button type="submit"> <%= buttons[i].name %> </button>
                     </form>
                 <% } %>
             </div>

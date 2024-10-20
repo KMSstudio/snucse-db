@@ -50,7 +50,11 @@ const output = {
     main: (req, res) => {
         res.render("index", {
             "navs": ["/read/cse/book", "/read/cse/exam/수학2"],
-            "buttons": ["/read/cse/book", "/read/cse/exam/수학2"],
+            "buttons": [
+                { name: '교재', href: "/read/cse/book"},
+                { name: '수학2', href: "/read/cse/exam/수학2"},
+                { name: '통계', href: "/read/cse/exam/통계학.정상아"},
+            ],
             "links" : [
                 { src: '/image/lnk/snucse.png', name: '컴공 홈페이지', href: 'https://cse.snu.ac.kr/'},
                 { src: '/image/lnk/snusci.png', name: '교양수학 홈페이지', href: 'https://www.math.snu.ac.kr/board/taoffice'},
