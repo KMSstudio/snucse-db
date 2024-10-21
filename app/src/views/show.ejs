@@ -16,14 +16,14 @@
             <div class="button-group">
                 <% if(is_admin) { %>
                     <button onclick="openUploadPopup('<%= path %>')" id="upload-file-btn">
-                        <img src="/image/upload.png" alt="New File" class="icon">
+                        <img src="/image/ico/upload.png" alt="New File" class="icon">
                     </button>
                     <button onclick="openCreatePopup('<%= path %>')" id="create-folder-btn">
-                        <img src="/image/new-folder.png" alt="New Folder" class="icon">
+                        <img src="/image/ico/new-folder.png" alt="New Folder" class="icon">
                     </button>
                 <% } %>
                 <button onclick="downloadZip('<%= path %>')" id="download-zip-btn">
-                    <img src="/image/download.png" alt="Download zip" class="icon">
+                    <img src="/image/ico/download.png" alt="Download zip" class="icon">
                 </button>
             </div>
         </header>

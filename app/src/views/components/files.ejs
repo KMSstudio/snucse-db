@@ -59,7 +59,7 @@
                 if (fileType === "folder") return;
                 checkFileImageExists(fileExt, exists => {
                     if (exists) { fileIcon.src = `/image/ext/${fileExt}.png`; }
-                    else { fileIcon.src = '/image/file.png'; }
+                    else { fileIcon.src = '/image/ico/file.png'; }
                 });
             });
         }

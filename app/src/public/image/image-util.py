@@ -12,9 +12,9 @@ def invert_grayscale(image_path, output_path):
             if a != 0:
                 grayscale = int(0.299 * r + 0.587 * g + 0.114 * b)
                 inverted = 255 - grayscale
-                # pixels[x, y] = (inverted, inverted, inverted, a)
-                pixels[x, y] = (247, 143, 30, a)
+                pixels[x, y] = (inverted, inverted, inverted, a)
+                # pixels[x, y] = (247, 143, 30, a)
 
     img.save(output_path)
 
-invert_grayscale('app\src\public\image\copy.png', 'app\src\public\image\copy-hover.png')
+invert_grayscale('app\src\public\image\ico\open-mail.png', 'app\src\public\image\ico\open-mail.png')

@@ -3,6 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Ban google translate -->
+    <meta name="google" value="notranslate">
+
     <title>SNUCSE DB</title>
     <link rel="stylesheet" href="/css/index.css">
     <script>
@@ -30,13 +34,13 @@
                 <div class="profile-info">
                     <!-- <a href="mailto:tomskang@naver.com">Email</a> -->
                     <button class="profile-button" onclick="location.href='mailto:tomskang@naver.com'">
-                        <img src="/image/open-mail.png" alt="email" class="profile-icon">
-                        <img src="/image/open-mail-hover.png" alt="email" class="profile-hover-icon">
+                        <img src="/image/ico/open-mail.png" alt="email" class="profile-icon">
+                        <img src="/image/ico/open-mail-hover.png" alt="email" class="profile-hover-icon">
                     </button>
                     <!-- <a href="https://github.com/KMSstudio">Github</a> -->
                     <button class="profile-button" onclick="window.open('https://github.com/KMSstudio')">
-                        <img src="/image/github.png" alt="email" class="profile-icon">
-                        <img src="/image/github-hover.png" alt="email" class="profile-hover-icon">
+                        <img src="/image/ico/github.png" alt="email" class="profile-icon">
+                        <img src="/image/ico/github-hover.png" alt="email" class="profile-hover-icon">
                     </button>
                 </div>
             </div>
@@ -45,8 +49,8 @@
                     <% for(let i = 0; i < links.length; i++) { %>
                         <div class="link-item">
                             <button class="copy-button" onclick="copyLink('<%= links[i].href %>')">
-                                <img src="/image/copy.png" alt="복사 버튼" class="copy-icon">
-                                <img src="/image/copy-hover.png" alt="복사 버튼 hover" class="copy-hover-icon">
+                                <img src="/image/ico/copy.png" alt="복사 버튼" class="copy-icon">
+                                <img src="/image/ico/copy-hover.png" alt="복사 버튼 hover" class="copy-hover-icon">
                             </button>
                             <div class="link-info">
                                 <img src="<%= links[i].src %>" alt="<%= links[i].name %>" class="link-icon">
