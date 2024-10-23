@@ -4,6 +4,8 @@ const path = require("path");
 const fs = require("fs");
 const multer = require("multer");
 
+const OAuth = require("../models/OAuthManage");
+
 const ZipFileSys = require("../models/ZipFileSys");
 const NavConstants = require("../models/NavConstants");
 
@@ -114,6 +116,29 @@ const database = {
     },
 };
 
+const usersys = {
+    request: (req, res) => {
+        const authUrl = OAuth.getAuthUrl();
+        res.redirect(authUrl);
+    },
+
+    callback: async (req, res) => {
+        const code = req.query.code;
+        if (code) {
+            try {
+                const userInfo = await OAuth.getUserInfo(code);
+                console.log(userInfo);
+                res.redirect('/');
+            } catch (error) {
+                console.error('Error retrieving access token', error);
+                res.redirect('/'); ///////////////////////////////////////////////////
+            }
+        } else {
+            res.redirect('/'); /////////////////////////////////////////
+        }
+    }
+}
+
 /**
  * @description Handles zip file downloads and refreshes the ZipFileSys.
  * The `zip` method serves a zip file to the client, while `refresh` updates the file system.
@@ -208,6 +233,7 @@ const filesys = {
 module.exports = {
     output,
     database,
+    usersys,
     zipsys,
     filesys
 };
