@@ -72,13 +72,13 @@
     <% if (files.length > 0) { %>
         <% files.forEach(function(file) { %>
             <div class="file-item" data-file-type="<%= file.type %>" data-file-name="<%= file.name %>" data-file-ext="<%= file.ext %>">
-                <img src="/image/<%= file.type %>.png" alt="<%= file.type %> icon" class="file-icon">
+                <img src="/image/ico/<%= file.type %>.png" alt="<%= file.type %> icon" class="file-icon">
                 <a href="<%= file.goto %>"><%= file.name %></a>
                 <% if (file.type === "folder") { %>
-                    <img src="/image/download.png" alt="Zip" class="download-zip-each-btn" onclick="downloadZipEach('<%= file.name %>')">
+                    <img src="/image/ico/download.png" alt="Zip" class="download-zip-each-btn" onclick="downloadZipEach('<%= file.name %>')">
                 <% } %>
                 <% if (is_admin) { %>
-                    <img src="/image/delete.png" alt="Del" class="delete-btn" onclick="deleteItem('<%= file.name %>')">
+                    <img src="/image/ico/delete.png" alt="Del" class="delete-btn" onclick="deleteItem('<%= file.name %>')">
                 <% } %>
             </div>
         <% }); %>
