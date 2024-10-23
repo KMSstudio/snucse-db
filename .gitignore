@@ -1,6 +1,8 @@
 # file data
 zip
-data
+data/*
+!data/.secret/
+!data/.secret/navConstant.json
 
 # Logs
 logs
