@@ -10,11 +10,11 @@
     <title>SNUCSE DB</title>
     <link rel="stylesheet" href="/css/index.css">
     <script>
-        function copyLink(href) {
+        function copy2ClipBoard(href) {
             navigator.clipboard.writeText(href).then(() => {
-                alert('링크가 복사되었습니다: ' + href);
+                alert('복사: ' + href);
             }, () => {
-                alert('링크 복사에 실패했습니다.');
+                alert('복사에 실패했습니다.');
             });
         }
     </script>
@@ -48,7 +48,7 @@
                 <div class="link-list">
                     <% for(let i = 0; i < links.length; i++) { %>
                         <div class="link-item">
-                            <button class="copy-button" onclick="copyLink('<%= links[i].href %>')">
+                            <button class="copy-button" onclick="copy2ClipBoard('<%= links[i].href %>')">
                                 <img src="/image/ico/copy.png" alt="복사 버튼" class="copy-icon">
                                 <img src="/image/ico/copy-hover.png" alt="복사 버튼 hover" class="copy-hover-icon">
                             </button>

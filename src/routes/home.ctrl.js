@@ -47,12 +47,23 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage: storage }).single("file");
 
+/**
+ * @description Renders the main page with navigation and links provided by NavConstants.
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ */
 const output = {
     main: (req, res) => {
         res.render("index", NavConstants.get(['navs', 'buttons', 'links']));
     }
 }
 
+/**
+ * @description Reads the contents of a directory and renders a file listing page.
+ * If the directory does not exist or cannot be accessed, an error page is shown.
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ */
 const database = {
     read: (req, res) => {
         const relativePath = req.params[0] || "";
@@ -103,6 +114,10 @@ const database = {
     },
 };
 
+/**
+ * @description Handles zip file downloads and refreshes the ZipFileSys.
+ * The `zip` method serves a zip file to the client, while `refresh` updates the file system.
+ */
 const zipsys = {
     // Download zip file of params[0].zip
     zip: (req, res) => {
@@ -122,6 +137,13 @@ const zipsys = {
     }
 }
 
+/**
+ * @description Manages file system operations, including downloading, uploading, creating, and deleting files or folders.
+ * - `download`: Serves a file to the client for download.
+ * - `upload`: Uploads a new file to a specific folder and refreshes the zip system.
+ * - `create`: Creates a new folder within a specified directory.
+ * - `delete`: Deletes a specified file or folder.
+ */
 const filesys = {
     // Download params[0]
     download: (req, res) => {
