@@ -1,6 +1,5 @@
 "use strict"
 
-
 document.addEventListener('DOMContentLoaded', function() {
     // About profile image scailing origin
     const profileImage = document.getElementById('profile-image');

@@ -143,7 +143,11 @@ const usersys = {
             const token = JwtManage.create(user);
 
             res.cookie('token', token, { httpOnly: true, secure: true });
-            if (req.cookies?.afterLogin) { res.redirect(req.cookies.afterLogin); }
+            const afterLogin = req.cookies?.afterLogin;
+            if (afterLogin) { 
+                res.clearCookie('afterLogin');
+                res.redirect(req.cookies.afterLogin);
+            }
             else { res.redirect('/'); }
         } catch (error) {
             console.error('Error retrieving access token', error);
