@@ -1,5 +1,3 @@
-// oauth.js
-
 const { google } = require('googleapis');
 
 class OAuth {

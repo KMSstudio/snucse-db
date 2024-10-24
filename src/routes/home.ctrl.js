@@ -58,15 +58,10 @@ const upload = multer({ storage: storage }).single("file");
  */
 const output = {
     main: (req, res) => {
-        const token = req.cookies?.token;
-        console.log(token);
-        if (token) {
-            const user = JwtManage.get(token);
-            if (!user) { return res.status(401).json({ message: '잘못된 토큰입니다.' }); }
-            console.log(user);
-        }
-        
         res.render("index", NavConstants.get(['navs', 'buttons', 'links']));
+    },
+    login: (req, res) => {
+        res.render("login", {navs: NavConstants.get('navs')});
     }
 }
 
@@ -78,6 +73,12 @@ const output = {
  */
 const database = {
     read: (req, res) => {
+        if (!req.user) { 
+            res.cookie('afterLogin', req.url);
+            res.render("login", {navs: NavConstants.get('navs')});
+            return;
+        }
+
         const relativePath = req.params[0] || "";
         const fullPath = path.join(__dirname, "../../data", relativePath);
 
@@ -137,17 +138,17 @@ const usersys = {
         if (!code) { res.redirect('/'); return; }
         try {
             const userInfo = await OAuth.getUserInfo(code);
-            console.log(userInfo);
             const user = UserManage.create(userInfo.email);
             if (!user.success) { res.redirect('/'); return; } ////////////////////////////////////////
             const token = JwtManage.create(user);
 
             res.cookie('token', token, { httpOnly: true, secure: true });
-            res.redirect('/');
+            if (req.cookies?.afterLogin) { res.redirect(req.cookies.afterLogin); }
+            else { res.redirect('/'); }
         } catch (error) {
             console.error('Error retrieving access token', error);
             res.redirect('/'); ///////////////////////////////////////////////////
-        }   
+        }
     }
 }
 
