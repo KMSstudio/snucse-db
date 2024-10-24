@@ -3,7 +3,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const userFilePath = path.join(__dirname, '../../data/userList.json');
+const userFilePath = path.join(__dirname, '../../config/userList.json');
 
 const msg_doesnot_regist    = '가입하지 않은 이메일입니다'
 const msg_invalid_email     = '@snu.ac.kr 이메일이 아닙니다.'

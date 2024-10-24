@@ -3,7 +3,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const navConstantFilePath = path.join(__dirname, '../../data/navConstant.json');
+const navConstantFilePath = path.join(__dirname, '../../config/navConstant.json');
 
 class NavConstants {
     // Static variable to store cached data
