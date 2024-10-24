@@ -37,8 +37,8 @@ class UserManage {
     static login(email) {
         const users = UserManage.loadUserData();
         const user = users.find(user => user.email === email);
-        if (user) { return { req: 'success', class: user.class, email: user.email }; }
-        else { return { req: 'fail', message: msg_doesnot_regist }; }
+        if (user) { return { success: true, class: user.class, email: user.email }; }
+        else { return { success: false, message: msg_doesnot_regist }; }
     }
 
     /**
@@ -49,16 +49,16 @@ class UserManage {
      * @returns {Object} - Contains registration result and user information.
      */
     static register(email) {
-        if (!email.endsWith('@snu.ac.kr')) { return { req: 'fail', message: msg_invalid_email }; }
+        if (!email.endsWith('@snu.ac.kr')) { return { success: false, message: msg_invalid_email }; }
         const users = UserManage.loadUserData();
-        if (users.find(user => user.email === email)) { return { req: 'fail', message: msg_already_regist }; }
+        if (users.find(user => user.email === email)) { return { success: false, message: msg_already_regist }; }
 
         // Register new user
         const newUser = { email: email, phone: '', number: '', class: 5 };
         users.push(newUser);
         UserManage.saveUserData(users);
 
-        return { req: 'success', class: newUser.class, email: newUser.email };
+        return { success: true, class: newUser.class, email: newUser.email };
     }
 
     /**
@@ -91,7 +91,7 @@ class UserManage {
         const users = UserManage.loadUserData();
         const user = users.find(user => user.email === email);
 
-        if (user) { return { req: 'success', class: user.class, email: user.email }; }
+        if (user) { return { success: true, class: user.class, email: user.email }; }
         else { return UserManage.register(email); }
     }
 }
