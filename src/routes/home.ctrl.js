@@ -50,13 +50,11 @@ const database = {
 
         const relativePath = req.params[0] || "";
         let backto = "";
-
-        if (relativePath === "") { 
-            backto = "/read/"; 
-        } else {
-            const splitPath = relativePath.split('/'); 
+        if (relativePath !== "") {
+            const splitPath = relativePath.split('/').filter(Boolean);
             splitPath.pop();
-            backto = "/read/" + splitPath.join('/');
+            backto = splitPath.join('/');
+            if (backto) { backto += '/'; }
         }
 
         try {
@@ -69,14 +67,14 @@ const database = {
                     name: file.name,
                     ext: (ext.length > 1) ? ext.substr(1) : '',
                     type: file.type,
-                    goto: isDirectory ? `/read/${file.name}` : `/download/${file.name}`
+                    goto: isDirectory ? `/read/${relativePath}${file.name}` : `/download/${relativePath}${file.name}`
                 };
             });
 
             res.render("show", {
                 files: files,
                 path: relativePath,
-                backto: backto,
+                backto: `/read/${backto}`,
                 is_admin: 1,
                 navs: NavConstants.get('navs'),
             });
@@ -151,9 +149,13 @@ const filesys = {
         const relativePath = req.params[0] || "";
         try {
             const data = await AwsFileSys.downloadFile(relativePath);
-            res.setHeader('Content-Disposition', `attachment; filename="${relativePath.split('/').pop()}"`);
+            const fileName = relativePath.split('/').pop(); // 파일 이름 추출
+            const encodedFileName = encodeURIComponent(fileName); // 파일 이름을 인코딩
+
+            res.setHeader('Content-Disposition', `attachment; filename="${encodedFileName}"`); // 인코딩된 파일 이름 사용
             res.send(data.Body);
         } catch (err) {
+            console.log(res);
             res.status(404).send("File not found.");
         }
     },
@@ -164,9 +166,10 @@ const filesys = {
             if (err) { return res.status(500).send("Error uploading the file."); }
             const relativePath = req.params[0] || "";
             try {
-                await FileSys.uploadFiles(relativePath, req.files);
+                await AwsFileSys.uploadFiles(relativePath, req.files);
                 res.redirect(`/read/${relativePath}`);
             } catch (error) {
+                console.log(error);
                 res.status(500).send("Error uploading the files to S3.");
             }
         });
