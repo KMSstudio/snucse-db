@@ -8,7 +8,7 @@ const ctrl = require("./home.ctrl");
 const ensureAuth = require("../middleware/ensureAuth");
 
 // Main
-router.get("/", ctrl.output.main);
+router.get("/", ensureAuth, ctrl.output.main);
 // Read folder and render show.ejs
 router.get("/read/*", ensureAuth, ctrl.database.read);
 

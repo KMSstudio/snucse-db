@@ -9,13 +9,13 @@
 </head>
 <body>
     <!-- Nav -->
-    <%- include('components/nav', { navs: navs }) %>
+    <%- include('components/nav', { navs: navs, user: user }) %>
 
     <div class="container">
         <header>
             <h1>Contents of <%= path %></h1>
             <div class="button-group">
-                <% if(is_admin) { %>
+                <% if(is_member) { %>
                     <button onclick="openUploadPopup('<%= path %>')" id="upload-file-btn">
                         <img src="/image/ico/upload.png" alt="New File" class="icon">
                     </button>

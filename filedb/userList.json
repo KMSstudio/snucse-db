@@ -1,1 +1,14 @@
-[]
+[
+  {
+      "email": "tomskang47@gmail.com",
+      "phone": "01020587356",
+      "number": "202410387",
+      "class": 1
+  },
+  {
+      "email": "zizonms@snu.ac.kr",
+      "phone": "",
+      "number": "",
+      "class": 1
+  }
+]

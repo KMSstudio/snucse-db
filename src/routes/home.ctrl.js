@@ -28,10 +28,16 @@ const upload = multer({
  */
 const output = {
     main: (req, res) => {
-        res.render("index", NavConstants.get(['navs', 'buttons', 'links']));
+        res.render("index", {
+            user: (req.user == null) ? null : req.user.email,
+            ...NavConstants.get(['navs', 'buttons', 'links'])
+        });
     },
     login: (req, res) => {
-        res.render("login", {navs: NavConstants.get('navs')});
+        res.render("login", {
+            user: null,
+            navs: NavConstants.get('navs')
+        });
     }
 }
 
@@ -45,7 +51,10 @@ const database = {
     read: async (req, res) => {
         if (!req.user) { 
             res.cookie('afterLogin', req.url);
-            return res.render("login", {navs: NavConstants.get('navs')});
+            return res.render("login", {
+                user: null,
+                navs: NavConstants.get('navs')
+            });
         }
 
         const relativePath = req.params[0] || "";
@@ -70,13 +79,17 @@ const database = {
                     goto: isDirectory ? `/read/${relativePath}${file.name}` : `/download/${relativePath}${file.name}`
                 };
             });
+            const is_admin = req.user.class <= 2;
+            const is_member = req.user.class <= 4;
 
             res.render("show", {
                 files: files,
                 path: relativePath,
                 backto: `/read/${backto}`,
-                is_admin: 1,
-                navs: NavConstants.get('navs'),
+                is_admin: is_admin,
+                is_member: is_member,
+                user: req.user.email,
+                navs: NavConstants.get('navs')
             });
         } catch (error) {
             console.log(error);
@@ -189,6 +202,10 @@ const filesys = {
     },
 
     delete: async (req, res) => {
+        if (req.user.class > 3) { 
+            return res.status(500).send("You don't have previlige to delete file");
+        }
+
         const relativePath = req.params[0] || "";
         const itemName = req.body.name;
         try {
