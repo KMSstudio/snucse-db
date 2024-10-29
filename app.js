@@ -5,6 +5,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const dotenv = require("dotenv");
 const cookieParser = require('cookie-parser');
+const ensureAuth = require('./src/middleware/ensureAuth');
 dotenv.config();
 
 const app = express();
@@ -16,7 +17,7 @@ app.use(express.static(`${__dirname}/src/public`));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
-
+app.use(ensureAuth);
 app.use("/", home);
 
 module.exports = app;

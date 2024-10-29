@@ -48,6 +48,24 @@ class AwsFileSys {
         }
         catch (error) { throw new Error(`Error reading path: ${error.message}`); }
     }
+
+    static refineFiles(fileList, relativePath = '') {
+        return fileList.map(file => {
+            const isDirectory = file.type === 'folder';
+            const ext = isDirectory ? '' : path.extname(file.name).slice(1);
+            // gotoPath
+            const gotoPath = isDirectory 
+                ? `/read/${path.join(relativePath, file.name)}`
+                : `/download/${path.join(relativePath, file.name)}`;
+            if (file.name.endsWith('/')) { file.name = file.name.slice(0, -1); }
+            return {
+                name: file.name,
+                ext: ext,
+                type: file.type,
+                goto: gotoPath
+            };
+        });
+    }
     
     static async uploadFile(relativePath, file) {
         // UTF-8 encoding

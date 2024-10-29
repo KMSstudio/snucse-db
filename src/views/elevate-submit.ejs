@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>승인 신청</title>
+    <link rel="stylesheet" href="/css/elevate-submit.css">
+</head>
+<body>
+    <div class="form-container">
+        <h1 class="title">승인 신청</h1>
+        <p class="subtitle">학번과 전화번호를 입력해 주세요.</p>
+        
+        <form id="elevateForm" action="/elevate/submit" method="POST" onsubmit="combineStudentId(event)">
+            <div class="input-row">
+                <input type="text" id="yearInput" class="form-input" placeholder="연도 (YYYY)" required pattern="\d{4}">
+                <span class="hyphen">-</span>
+                <input type="text" id="idInput" class="form-input" placeholder="다섯 자리 (XXXXX)" required pattern="\d{5}">
+            </div>
+            <div class="input-row">
+                <input type="text" name="phone" id="phoneInput" class="form-input" placeholder="전화번호 입력" required>
+            </div>
+            <button type="submit" class="submit-btn">제출하기</button>
+        </form>
+    </div>
+
+    <script>
+        function combineStudentId(event) {
+            event.preventDefault();
+            const year = document.getElementById('yearInput').value;
+            const id = document.getElementById('idInput').value;
+            const studentId = `${year}-${id}`;
+            document.getElementById('studentId').value = studentId;
+            document.getElementById('elevateForm').submit();
+        }
+    </script>
+</body>
+</html>

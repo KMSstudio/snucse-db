@@ -8,9 +8,9 @@ const ctrl = require("./home.ctrl");
 const ensureAuth = require("../middleware/ensureAuth");
 
 // Main
-router.get("/", ensureAuth, ctrl.output.main);
+router.get("/", ctrl.output.main);
 // Read folder and render show.ejs
-router.get("/read/*", ensureAuth, ctrl.database.read);
+router.get("/read/*", ctrl.database.read);
 
 // Login
 router.get("/login", ctrl.output.login);
@@ -21,11 +21,16 @@ router.get("/logout", (req, res) => {
     res.redirect('/');
 })
 
+// Elevate
+router.get("/elevate", ctrl.output.elevate);
+router.get("/elevate/submit", (req, res) => {
+    res.render("elevate-submit"); });
+
 // Download zip file
 router.get("/zip/*", ctrl.zipsys.zip);
 router.post("/zip/*", ctrl.zipsys.zip);
 // Delete file or folder
-router.post("/delete/*", ensureAuth, ctrl.filesys.delete);
+router.post("/delete/*", ctrl.filesys.delete);
 // Upload new file
 router.get("/upload/*", (req, res) => {
     res.render("popup/upload", { path: req.params[0] }); });

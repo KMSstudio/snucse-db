@@ -38,6 +38,13 @@ const output = {
             user: null,
             navs: NavConstants.get('navs')
         });
+    },
+    elevate: (req, res) => {
+        if (!req.user) { res.redirect('/login'); }
+        res.render("elevate", {
+            user: req.user?.email,
+            navs: NavConstants.get('navs')
+        })
     }
 }
 
@@ -68,17 +75,7 @@ const database = {
 
         try {
             const fileList = await AwsFileSys.readFiles(relativePath);
-            const files = fileList.map(file => {
-                const isDirectory = file.type === 'folder';
-                const ext = isDirectory ? '' : path.extname(file.name);
-
-                return {
-                    name: file.name,
-                    ext: (ext.length > 1) ? ext.substr(1) : '',
-                    type: file.type,
-                    goto: isDirectory ? `/read/${relativePath}${file.name}` : `/download/${relativePath}${file.name}`
-                };
-            });
+            const files = AwsFileSys.refineFiles(fileList, relativePath);
             const is_admin = req.user.class <= 2;
             const is_member = req.user.class <= 4;
 
