@@ -39,12 +39,22 @@ const output = {
             navs: NavConstants.get('navs')
         });
     },
+
     elevate: (req, res) => {
-        if (!req.user) { res.redirect('/login'); }
         res.render("elevate", {
             user: req.user?.email,
             navs: NavConstants.get('navs')
         })
+    },
+    elevateSubmit: (req, res)=> {
+        if (!req.user) { 
+            res.cookie('afterLogin', req.url);
+            res.redirect('/login');
+        }
+        res.render("elevate-submit", {
+            user: req.user?.email,
+            navs: NavConstants.get('navs')
+        });
     }
 }
 

@@ -4,11 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>승인 신청</title>
+    <link rel="stylesheet" href="/css/index.css">
     <link rel="stylesheet" href="/css/elevate-submit.css">
 </head>
 <body>
+    <!-- Nav -->
+    <%- include('components/nav', { navs: navs, user: user }) %>
+
     <div class="form-container">
-        <h1 class="title">승인 신청</h1>
+        <h1 class="title">SNUCSE-DB 승격 신청</h1>
         <p class="subtitle">학번과 전화번호를 입력해 주세요.</p>
         
         <form id="elevateForm" action="/elevate/submit" method="POST" onsubmit="combineStudentId(event)">
@@ -18,7 +22,7 @@
                 <input type="text" id="idInput" class="form-input" placeholder="다섯 자리 (XXXXX)" required pattern="\d{5}">
             </div>
             <div class="input-row">
-                <input type="text" name="phone" id="phoneInput" class="form-input" placeholder="전화번호 입력" required>
+                <input type="number" name="phone" id="phoneInput" class="form-input" placeholder="전화번호 입력" required>
             </div>
             <button type="submit" class="submit-btn">제출하기</button>
         </form>

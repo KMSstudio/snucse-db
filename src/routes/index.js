@@ -23,8 +23,7 @@ router.get("/logout", (req, res) => {
 
 // Elevate
 router.get("/elevate", ctrl.output.elevate);
-router.get("/elevate/submit", (req, res) => {
-    res.render("elevate-submit"); });
+router.get("/elevate/submit", ctrl.output.elevateSubmit);
 
 // Download zip file
 router.get("/zip/*", ctrl.zipsys.zip);
