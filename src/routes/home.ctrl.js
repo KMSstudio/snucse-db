@@ -6,6 +6,7 @@ const multer = require("multer");
 
 const OAuth = require("../models/OAuthManage");
 const UserManage = require("../models/UserManage");
+const ElevateManage = require("../models/ElevateManage");   // usersys.elevateSubmit
 const JwtManage = require("../models/JwtManage");
 
 const AwsFileSys = require('../models/AwsFileSys');
@@ -130,6 +131,19 @@ const usersys = {
         } catch (error) {
             console.error('Error retrieving access token', error);
             res.redirect('/'); ///////////////////////////////////////////////////
+        }
+    },
+
+    elevateSubmit: async (req, res) => {
+        const user = req.user;
+        if (user.class <= 4) { return res.redirect('/'); }
+        const { phone, number } = req.body;
+        try {
+            await ElevateManage.submit(user.email, phone, number);
+            return res.redirect('/');
+        } catch (error) {
+            console.error('Submit failed:', error);
+            return res.redirect('/'); ///////////////////////////////////////////////////
         }
     }
 }
