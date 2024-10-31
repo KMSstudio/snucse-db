@@ -12,10 +12,12 @@ def invert_grayscale(image_path, output_path):
             if a != 0:
                 grayscale = int(0.299 * r + 0.587 * g + 0.114 * b)
                 inverted = 255 - grayscale
+                # invert
+
                 # pixels[x, y] = (inverted, inverted, inverted, a)
-                pixels[x, y] = (255, 255, 255, 255) if inverted > 50 else (240, 240, 240, 0)
-                # pixels[x, y] = (247, 143, 30, a)
+                # pixels[x, y] = (255, 255, 255, 255)
+                pixels[x, y] = (247, 143, 30, 255)
 
     img.save(output_path)
 
-invert_grayscale('src\public\image\lnk\etl.png', 'src\public\image\lnk\etl.png')
+invert_grayscale(r'src\public\image\ico\admin.png', r'src\public\image\ico\admin-hover.png')

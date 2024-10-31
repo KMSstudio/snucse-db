@@ -32,6 +32,12 @@
                     <img src="/image/profile/snu-logo.png" alt="프로필 이미지" id="profile-image">
                 </div>
                 <div class="profile-info">
+                    <% if (is_admin) { %>
+                        <button class="profile-button" onclick="window.location.href='/admin'">
+                            <img src="/image/ico/admin.png" alt="email" class="profile-icon">
+                            <img src="/image/ico/admin-hover.png" alt="email" class="profile-hover-icon">
+                        </button>
+                    <% } %>
                     <!-- <a href="mailto:tomskang@naver.com">Email</a> -->
                     <button class="profile-button" onclick="copy2ClipBoard('tomskang@naver.com')">
                         <img src="/image/ico/open-mail.png" alt="email" class="profile-icon">

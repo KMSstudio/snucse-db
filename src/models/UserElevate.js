@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 
-class ElevateManage {
+class UserElevate {
     static userFilePath = path.join(__dirname, '../../filedb/userElevate.json');
     static cachedUsers = null;
 
@@ -64,4 +64,4 @@ class ElevateManage {
     }
 }
 
-module.exports = ElevateManage;
+module.exports = UserElevate;

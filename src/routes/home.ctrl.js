@@ -6,13 +6,12 @@ const multer = require("multer");
 
 const OAuth = require("../models/OAuthManage");
 const UserManage = require("../models/UserManage");
-const ElevateManage = require("../models/ElevateManage");   // usersys.elevateSubmit
+const UserElevate = require("../models/UserElevate");   // usersys.elevateSubmit
 const JwtManage = require("../models/JwtManage");
 
 const AwsFileSys = require('../models/AwsFileSys');
 const ZipFileSys = require("../models/ZipFileSys");
 const NavConstants = require("../models/NavConstants");
-const { file } = require("googleapis/build/src/apis/file");
 
 const storage = multer.memoryStorage();
 const upload = multer({
@@ -32,6 +31,7 @@ const output = {
     main: (req, res) => {
         res.render("index", {
             user: (req.user == null) ? null : req.user.email,
+            is_admin: (req.user == null) ? 0 : req.user.class <= 2,
             ...NavConstants.get(['navs', 'buttons', 'links'])
         });
     },
@@ -140,7 +140,7 @@ const usersys = {
         if (user.class <= 4) { return res.redirect('/'); }
         const { phone, number } = req.body;
         try {
-            await ElevateManage.submit(user.email, phone, number);
+            await UserElevate.submit(user.email, phone, number);
             return res.redirect('/');
         } catch (error) {
             console.error('Submit failed:', error);
