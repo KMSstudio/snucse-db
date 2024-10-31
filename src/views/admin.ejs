@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Page</title>
+    <link rel="stylesheet" href="/css/admin.css">
+</head>
+<body>
+    <!-- Nav -->
+    <%- include('components/nav', { navs: navs }) %>
+
+    <div class="download-bar">
+        <button onclick="location.href='/download/userList'">Download userList.json</button>
+        <button onclick="location.href='/download/userElevate'">Download userElevate.json</button>
+        <button onclick="location.href='/download/navConstant'">Download navConstant.json</button>
+    </div>
+
+    <div class="split-screen">
+        <div class="panel">
+            <h2>User List</h2>
+            <ul id="userList">
+                <% userList.forEach(user => { %>
+                    <li><%= user.email %> - <%= user.class %></li>
+                <% }); %>
+            </ul>
+        </div>
+        
+        <div class="panel">
+            <h2>User Elevate</h2>
+            <ul id="userElevate">
+                <% userElevate.forEach(request => { %>
+                    <li>
+                        <%= request.email %> - Phone: <%= request.phone %>, Number: <%= request.number %>
+                        <button class="elevate-btn" onclick="elevateUser('<%= request.email %>')">
+                            승격
+                            <!-- <img src="/image/ico/elevate.png" alt="Elevate" class="elevate-icon"> -->
+                        </button>
+                    </li>
+                <% }); %>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        function elevateUser(email) {
+            const url = `/admin/elevate?email=${encodeURIComponent(email)}`;
+            fetch(url, { method: 'POST' })
+                .then(response => {
+                    if (response.ok) {
+                        alert("Elevate request sent successfully.");
+                    } else {
+                        alert("Failed to send elevate request.");
+                    }
+                })
+                .catch(error => {
+                    console.error("Error sending elevate request:", error);
+                    alert("Error sending elevate request.");
+                });
+        }
+    </script>
+</body>
+</html>

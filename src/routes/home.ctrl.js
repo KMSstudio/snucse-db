@@ -12,6 +12,7 @@ const JwtManage = require("../models/JwtManage");
 const AwsFileSys = require('../models/AwsFileSys');
 const ZipFileSys = require("../models/ZipFileSys");
 const NavConstants = require("../models/NavConstants");
+const { file } = require("googleapis/build/src/apis/file");
 
 const storage = multer.memoryStorage();
 const upload = multer({
@@ -238,10 +239,49 @@ const filesys = {
     }
 };
 
+const admin = {
+    main: (req, res) => {
+        if (!req.user) { 
+            res.cookie('afterLogin', req.url);
+            return res.redirect('/login'); }
+        if (req.user.class > 2) { return res.redirect('/'); }
+        try {
+            const userList = JSON.parse(fs.readFileSync(path.join(__dirname, '../../filedb/userList.json'), 'utf-8'));
+            const userElevate = JSON.parse(fs.readFileSync(path.join(__dirname, '../../filedb/userElevate.json'), 'utf-8'));
+            res.render('admin', { userList, userElevate, navs: NavConstants.get('navs'), user: req.user?.email });
+        } catch (error) {
+            console.error("Error reading JSON files:", error);
+            res.status(500).send("Error loading admin data");
+        }
+    },
+
+    download: (req, res) => {
+        const fileMap = {
+            'userList': path.join(__dirname, '../../filedb/userList.json'),
+            'userElevate': path.join(__dirname, '../../filedb/userElevate.json'),
+            'navConstant': path.join(__dirname, '../../filedb/navConstant.json')
+        };
+
+        const fileKey = req.params.file;
+        const filePath = fileMap[fileKey];
+
+        if (filePath) {
+            res.download(filePath, err => {
+                if (err) { 
+                    console.error("File download error:", err); 
+                    res.status(500).send("File download failed"); }
+            });
+        }
+        else { res.status(404).send("File not found"); }
+    },
+
+}
+
 module.exports = {
     output,
     database,
     usersys,
     zipsys,
-    filesys
+    filesys,
+    admin,
 };

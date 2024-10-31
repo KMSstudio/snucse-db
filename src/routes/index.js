@@ -12,6 +12,10 @@ router.get("/", ctrl.output.main);
 // Read folder and render show.ejs
 router.get("/read/*", ctrl.database.read);
 
+// Admin
+router.get("/admin", ctrl.admin.main);
+router.get("/admin/download/:file", ctrl.admin.download)
+
 // Login
 router.get("/login", ctrl.output.login);
 router.get("/login/google", ctrl.usersys.request);
