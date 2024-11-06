@@ -71,13 +71,13 @@ class UserManage {
      * @param {string} number - The number of the user (e.g., student ID).
      * @returns {boolean} - True if elevation is successful, otherwise false.
      */
-    static elevate(email, phone, number) {
+    static elevate(email, phone, number, auth=4) {
         const users = UserManage.loadUserData();
         const user = users.find(user => user.email === email);
         if (!user) { return false; }
 
         // Elevate user
-        user.class = 4;
+        user.class = auth;
         user.phone = phone;
         user.number = number;
         UserManage.saveUserData(users);

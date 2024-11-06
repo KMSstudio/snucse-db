@@ -5,8 +5,8 @@ const fs = require("fs");
 const multer = require("multer");
 
 const OAuth = require("../models/OAuthManage");
-const UserManage = require("../models/UserManage");
-const UserElevate = require("../models/UserElevate");   // usersys.elevateSubmit
+const UserManage = require("../models/UserManage");     // admin.elevate
+const UserElevate = require("../models/UserElevate");   // usersys.elevateSubmit admin.elevate
 const JwtManage = require("../models/JwtManage");
 
 const AwsFileSys = require('../models/AwsFileSys');
@@ -261,10 +261,8 @@ const admin = {
             'userElevate': path.join(__dirname, '../../filedb/userElevate.json'),
             'navConstant': path.join(__dirname, '../../filedb/navConstant.json')
         };
-
         const fileKey = req.params.file;
         const filePath = fileMap[fileKey];
-
         if (filePath) {
             res.download(filePath, err => {
                 if (err) { 
@@ -275,6 +273,15 @@ const admin = {
         else { res.status(404).send("File not found"); }
     },
 
+    elevate: (req, res) => {
+        const email = req.query.email;
+        const elevateUser = UserElevate.get().find(user => user.email === email);
+        if (!elevateUser) { return res.status(404).send("User not found in userElecate.json"); }
+        const { phone, number } = elevateUser;
+        const success = UserManage.elevate(email, phone, number, 4);
+        if (success) { UserElevate.del('email', email); res.send("Elevate success"); }
+        else { res.status(500).send("Failed to elevate user class."); }
+    }
 }
 
 module.exports = {
