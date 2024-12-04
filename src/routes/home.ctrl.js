@@ -2,16 +2,21 @@
 
 const path = require("path");
 const fs = require("fs");
-const multer = require("multer");
+const multer = require("multer")
 
-const OAuth = require("../models/OAuthManage");
-const UserManage = require("../models/UserManage");     // admin.elevate
+// Logger
+const LogSys = require("../models/LogSys");             // output.main, database.read, filesys.*, admin.elevate
+
+// User Auth
+const OAuth = require("../models/OAuthManage");         // usersys.*
+const UserManage = require("../models/UserManage");     // usersys.callback, admin.elevate
 const UserElevate = require("../models/UserElevate");   // usersys.elevateSubmit admin.elevate
-const JwtManage = require("../models/JwtManage");
+const JwtManage = require("../models/JwtManage");       // usersys.callback
 
-const AwsFileSys = require('../models/AwsFileSys');
-const ZipFileSys = require("../models/ZipFileSys");
-const NavConstants = require("../models/NavConstants");
+// File Sys, Render Data
+const AwsFileSys = require('../models/AwsFileSys');     // database.read, filesys.*
+const ZipFileSys = require("../models/ZipFileSys");     // TODO: refactoring this
+const NavConstants = require("../models/NavConstants"); // output.*, database.read, admin.main
 
 const storage = multer.memoryStorage();
 const upload = multer({
@@ -29,6 +34,7 @@ const upload = multer({
  */
 const output = {
     main: (req, res) => {
+        LogSys.log('access to main', req.user?.email, req.userIp);
         res.render("index", {
             user: (req.user == null) ? null : req.user.email,
             is_admin: (req.user == null) ? 0 : req.user.class <= 2,
@@ -86,6 +92,7 @@ const database = {
         }
 
         try {
+            LogSys.log(`user open folder ${relativePath}`, req.user?.email, req.userIp);
             const fileList = await AwsFileSys.readFiles(relativePath);
             const files = AwsFileSys.refineFiles(fileList, relativePath);
             const is_admin = req.user.class <= 2;
@@ -139,11 +146,14 @@ const usersys = {
         const user = req.user;
         if (user.class <= 4) { return res.redirect('/'); }
         const { phone, number } = req.body;
+
+        LogSys.log(`user request elevate`, req.user?.email, req.userIp);
         try {
             await UserElevate.submit(user.email, phone, number);
             return res.redirect('/');
         } catch (error) {
             console.error('Submit failed:', error);
+            LogSys.err(`Elevate application error ${error}`, req.user?.email, req.userIp)
             return res.redirect('/'); ///////////////////////////////////////////////////
         }
     }
@@ -183,19 +193,21 @@ const filesys = {
     download: async (req, res) => {
         const relativePath = req.params[0] || "";
         try {
+            LogSys.log(`user download file ${relativePath}`, req.user?.email, req.userIp);
             const data = await AwsFileSys.downloadFile(relativePath);
-            const fileName = relativePath.split('/').pop(); // 파일 이름 추출
-            const encodedFileName = encodeURIComponent(fileName); // 파일 이름을 인코딩
+            const fileName = relativePath.split('/').pop();
+            const encodedFileName = encodeURIComponent(fileName);
 
-            res.setHeader('Content-Disposition', `attachment; filename="${encodedFileName}"`); // 인코딩된 파일 이름 사용
+            res.setHeader('Content-Disposition', `attachment; filename="${encodedFileName}"`);
             res.send(data.Body);
         } catch (err) {
-            console.log(res);
+            LogSys.err(`error while downloading${relativePath}: File not found`, req.user?.email, req.userIp);
             res.status(404).send("File not found.");
         }
     },
 
     upload: (req, res) => {
+        LogSys.log(`user upload file at ${req.params[0] || ""}`, req.user?.email, req.userIp);
         // Upload file to multer.storage temporary
         upload(req, res, async (err) => {
             if (err) { return res.status(500).send("Error uploading the file."); }
@@ -213,6 +225,7 @@ const filesys = {
     create: async (req, res) => {
         const relativePath = req.params[0] || "";
         const folderName = req.body.name.trim();
+        LogSys.log(`user create folder ${relativePath}/$${folderName}`, req.user?.email, req.userIp);
         if (!folderName) { return res.status(400).send("Invalid folder name."); }
         try {
             await AwsFileSys.createFolder(relativePath, folderName);
@@ -225,11 +238,10 @@ const filesys = {
 
     delete: async (req, res) => {
         if (req.user.class > 3) { 
-            return res.status(500).send("You don't have previlige to delete file");
-        }
-
+            return res.status(500).send("You don't have previlige to delete file"); }
         const relativePath = req.params[0] || "";
         const itemName = req.body.name;
+        LogSys.log(`user delete file ${relativePath}/$${itemName}`, req.user?.email, req.userIp);
         try {
             await AwsFileSys.deleteItem(relativePath, itemName);
             res.redirect(`/read/${relativePath}`);
@@ -279,6 +291,7 @@ const admin = {
         if (!elevateUser) { return res.status(404).send("User not found in userElecate.json"); }
         const { phone, number } = elevateUser;
         const success = UserManage.elevate(email, phone, number, 4);
+        LogSys.log(`admin elevate user ${email} to class 4`, 'admin', req.userIp);
         if (success) { UserElevate.del('email', email); res.send("Elevate success"); }
         else { res.status(500).send("Failed to elevate user class."); }
     }
