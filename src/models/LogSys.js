@@ -3,13 +3,13 @@ const path = require('path');
 const archiver = require('archiver');
 
 class LogSys {
-    static logDir = '../../log';
+    static logDir = path.resolve(__dirname, '../../log');;
     static histDir = path.join(LogSys.logDir, 'hist');
     static logFile = path.join(LogSys.logDir, 'current.log');
 
     static init() {
-        if (!fs.existsSync(this.logDir)) fs.mkdirSync(this.logDir, { recursive: true });
-        if (!fs.existsSync(this.histDir)) fs.mkdirSync(this.histDir, { recursive: true });
+        if (!fs.existsSync(this.logDir)) { fs.mkdirSync(this.logDir, { recursive: true }); }
+        if (!fs.existsSync(this.histDir)) { fs.mkdirSync(this.histDir, { recursive: true }); }
     }
 
     static log(msg, user, ip) { this.writeLog('INFO', msg, user, ip); }
@@ -22,7 +22,7 @@ class LogSys {
         const adr = ip || 'unknown';
         if (email.endsWith('@snu.ac.kr')) { email = email.slice(0, -'@snu.ac.kr'.length); }
 
-        const fullMsg = `[${timestamp}] [${level}] [${usr}] [${adr}] ${msg}\n`;
+        const fullMsg = `[${timestamp}] [${level}] [${user}] [${adr}] ${msg}\n`;
         fs.appendFileSync(this.logFile, fullMsg);
     }
 

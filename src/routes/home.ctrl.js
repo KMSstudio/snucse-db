@@ -76,10 +76,11 @@ const database = {
     read: async (req, res) => {
         if (!req.user) { 
             res.cookie('afterLogin', req.url);
-            return res.render("login", {
-                user: null,
-                navs: NavConstants.get('navs')
-            });
+            return res.redirect("/login");
+            // return res.render("login", {
+            //     user: null,
+            //     navs: NavConstants.get('navs')
+            // });
         }
 
         const relativePath = req.params[0] || "";
@@ -201,7 +202,7 @@ const filesys = {
             res.setHeader('Content-Disposition', `attachment; filename="${encodedFileName}"`);
             res.send(data.Body);
         } catch (err) {
-            LogSys.err(`error while downloading${relativePath}: File not found`, req.user?.email, req.userIp);
+            LogSys.err(`error while downloading ${relativePath}: File not found`, req.user?.email, req.userIp);
             res.status(404).send("File not found.");
         }
     },
@@ -282,7 +283,7 @@ const admin = {
                     res.status(500).send("File download failed"); }
             });
         }
-        else { res.status(404).send("File not found"); }
+        else { res.status(404).send(`File ${filePath} not found`); }
     },
 
     elevate: (req, res) => {
