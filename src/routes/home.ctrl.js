@@ -1,8 +1,9 @@
 "use strict";
 
 const path = require("path");
-const fs = require("fs");
-const multer = require("multer")
+const fs = require("fs");                               // admin.main, zipsys.zip   | file sys
+const archiver = require('archiver');                   // admin.downlaod           | compress to .zip file. 
+const multer = require("multer")                        // filesys.upload           | upload file
 
 // Logger
 const LogSys = require("../models/LogSys");             // output.main, database.read, filesys.*, admin.elevate
@@ -269,24 +270,56 @@ const admin = {
     },
 
     download: (req, res) => {
+        if (!req.user) { 
+            res.cookie('afterLogin', req.url);
+            return res.redirect('/login'); }
+        if (req.user.class > 2) { return res.redirect('/'); }
         const fileMap = {
             'userList': path.join(__dirname, '../../filedb/userList.json'),
             'userElevate': path.join(__dirname, '../../filedb/userElevate.json'),
-            'navConstant': path.join(__dirname, '../../filedb/navConstant.json')
+            'navConstant': path.join(__dirname, '../../filedb/navConstant.json'),
+        };
+        const folderMap = {
+            'filedb': path.join(__dirname, '../../filedb'),
+            'log': path.join(__dirname, '../../log'),
         };
         const fileKey = req.params.file;
-        const filePath = fileMap[fileKey];
-        if (filePath) {
-            res.download(filePath, err => {
-                if (err) { 
-                    console.error("File download error:", err); 
-                    res.status(500).send("File download failed"); }
+
+        LogSys.log(`admin download ${fileKey}`, req.user?.email, req.userIp);
+        if (folderMap[fileKey]) {
+            const folderPath = folderMap[fileKey];
+            const zipFileName = `${fileKey}.zip`;
+            const zipFilePath = path.join(__dirname, `../../${zipFileName}`);
+            res.setHeader('Content-Disposition', `attachment; filename="${zipFileName}"`);
+            res.setHeader('Content-Type', 'application/zip');
+            const archive = archiver('zip', { zlib: { level: 9 } });
+            archive.on('error', (err) => {
+                console.error(`Error creating archive for ${fileKey}:`, err);
+                res.status(500).send('Error creating archive.');
             });
+            archive.pipe(res);
+            archive.directory(folderPath, false);
+            archive.finalize().catch((err) => {
+                LogSys.err(`error while downloading ${fileKey}`, 'admin', req.userIp);
+                res.status(500).send('Error finalizing archive.');
+            });
+        } else if (fileMap[fileKey]) {
+            const filePath = fileMap[fileKey];
+            res.download(filePath, (err) => {
+                if (err) {
+                    LogSys.err(`error while downloading ${fileKey}`, req.user?.email, req.userIp);
+                    return res.status(500).send('File download failed');
+                }
+            });
+        } else {
+            LogSys.warn(`admin try to get invalid file ${fileKey}`, req.user?.email, req.userIp);
+            return res.status(404).send(`Invalid request for ${fileKey}`);
         }
-        else { res.status(404).send(`File ${filePath} not found`); }
     },
 
     elevate: (req, res) => {
+        if (!req.user) { return res.redirect('/login'); }
+        if (req.user.class > 2) { return res.redirect('/'); }
         const email = req.query.email;
         const elevateUser = UserElevate.get().find(user => user.email === email);
         if (!elevateUser) { return res.status(404).send("User not found in userElecate.json"); }

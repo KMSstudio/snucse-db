@@ -22,7 +22,7 @@ class LogSys {
         const adr = ip || 'unknown';
         if (email.endsWith('@snu.ac.kr')) { email = email.slice(0, -'@snu.ac.kr'.length); }
 
-        const fullMsg = `[${timestamp}] [${level}] [${user}] [${adr}] ${msg}\n`;
+        const fullMsg = `[${timestamp}] [${level}] [${email}] [${adr}] ${msg}\n`;
         fs.appendFileSync(this.logFile, fullMsg);
     }
 
