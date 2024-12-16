@@ -118,11 +118,13 @@ const database = {
 
 const usersys = {
     request: (req, res) => {
+        console.log('ctrl::usersys.request()')
         const authUrl = OAuth.getAuthUrl();
         res.redirect(authUrl);
     },
 
     callback: async (req, res) => {
+        console.log('ctrl::usersys.callback()')
         const code = req.query.code;
         if (!code) { res.redirect('/'); return; }
         try {

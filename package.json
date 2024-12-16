@@ -8,7 +8,7 @@
   },
   "scripts": {
     "start": "nodemon ./bin/www.js",
-    "run": "pm2 start ./bin/www.js",
+    "rel": "pm2 start ./bin/www.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
