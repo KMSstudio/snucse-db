@@ -35,6 +35,7 @@ const upload = multer({
  */
 const output = {
     main: (req, res) => {
+        console.log('ctrl::output.main()')
         LogSys.log('access to main', req.user?.email, req.userIp);
         res.render("index", {
             user: (req.user == null) ? null : req.user.email,
@@ -43,6 +44,7 @@ const output = {
         });
     },
     login: (req, res) => {
+        console.log('ctrl::output.login()')
         res.render("login", {
             user: null,
             navs: NavConstants.get('navs')
